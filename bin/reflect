@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+""" CLI
+
+Example:
+    % reflect --help
+"""
+import fire
+
+from reflection import reflection
+from reflection import drawing
+
+
+def main():
+    """ Main entry. """
+    triangle = [(-1, 0), (0, 4), (1, 0)]
+    center = reflection.find_center(triangle)
+
+    drawing.draw_multiple_points(triangle)
+    drawing.draw_one_point(center, style="kx")
+    drawing.draw()
+
+
+if __name__ == '__main__':
+    fire.Fire(main)
