@@ -1,4 +1,4 @@
-""" In re: package expectations.
+""" Package config expectations.
 """
 import semantic_version
 
