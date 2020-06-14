@@ -106,6 +106,10 @@ def test_two_points_lines_of_reflection():
     ), "Order of points shouldn't matter."
 
 
-@pytest.mark.skip
 def test_triangle_lines_of_reflection():
-    assert False
+    isosceles_triangle = [(-2, 0), (0, 4), (2, 0)]
+    derived_lof = reflection.find_lines_of_reflection(isosceles_triangle)
+    assert len(derived_lof) == 1
+    assert ((0, 4), (0, 0)) in derived_lof
+
+    assert False, "Equilateral triangle!"
