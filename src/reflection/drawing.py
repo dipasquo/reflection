@@ -33,11 +33,11 @@ def draw_multiple_points(points: List[tuple], style: str = "bo") -> None:
     plt.plot(x_coords, y_coords, style)
 
 
-def draw_one_line(endpoints: List[tuple], style: str = "b-"):
+def draw_one_line(endpoints: tuple, style: str = "b-"):
     """ Draw a line connecting a list of exactly two endpoints.
 
     Args:
-        endpoints (tuple): list of two (x, y) tuples
+        endpoints (tuple): tuple of two (x, y) tuples
         style (str): drawing style e.g. "b-"
     """
     assert len(endpoints) == 2, "expected exactly two points to draw a line"
@@ -46,7 +46,7 @@ def draw_one_line(endpoints: List[tuple], style: str = "b-"):
     plt.plot(x_coords, y_coords, style)
 
 
-def draw_multiple_lines(lines: List[list], style: str = "b-") -> None:
+def draw_multiple_lines(lines: List[tuple], style: str = "b-") -> None:
     """ Draw a set of lines.
 
     Args:

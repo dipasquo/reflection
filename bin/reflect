@@ -13,13 +13,14 @@ from reflection import drawing
 def main():
     """ Main entry. """
     line = [(-2, 0), (2, 0)]
-    triangle = [(-1, 0), (0, 4), (1, 0)]
-    rectangle = [(-1, 0), (-1, 4), (1, 4), (1, 0)]
-    square = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
+    triangle = [(-2, 0), (0, 4), (2, 0)]
+    rectangle = [(-2, 0), (-2, 2), (2, 2), (2, 0)]
+    square = [(-2, -2), (-2, 2), (2, 2), (2, -2)]
 
-    for shape in [line, triangle, rectangle, square]:
+    for shape in [rectangle, square]:
         drawing.draw_multiple_points(shape)
         drawing.draw_one_point(reflection.find_center(shape), style="kx")
+        drawing.draw_multiple_lines(reflection.find_lines_of_reflection(shape), "g:")
         drawing.draw()
 
 

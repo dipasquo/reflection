@@ -15,13 +15,13 @@ def test_draw_multiple_points():
 
 
 def test_draw_line():
-    drawing.draw_one_line([(-2, -2), (2, 2)])
+    drawing.draw_one_line(((-2, -2), (2, 2)))
     drawing.draw()
 
-    drawing.draw_one_line([(-2, -2), (2, 2)], style="g--")
+    drawing.draw_one_line(((-2, -2), (2, 2)), style="g--")
     drawing.draw()
 
 
 def test_draw_lines():
-    drawing.draw_multiple_lines([[(0, -2), (0, 2)], [(-2, 0), (2, 0)]])
+    drawing.draw_multiple_lines([((0, -2), (0, 2)), ((-2, 0), (2, 0))])
     drawing.draw()
