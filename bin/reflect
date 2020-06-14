@@ -4,19 +4,21 @@
 Example:
     % reflect --help
 """
+from math import sqrt
+
 import fire
 
-from reflection import reflection
-from reflection import drawing
+from reflection import reflection, drawing
 
 
 def main():
     """ Main entry. """
     two_horiz_points = [(-2, 0), (2, 0)]
     two_vert_points = [(0, 2), (0, -2)]
-    isosceles_triangle = [(-2, 0), (0, 4), (2, 0)]
     rectangle = [(-2, 0), (-2, 2), (2, 2), (2, 0)]
     square = [(-2, -2), (-2, 2), (2, 2), (2, -2)]
+    isosceles_triangle = [(-1, 0), (0, 4), (1, 0)]
+    equilateral_triangle = [(0,0), (4/2,sqrt(3)*4/2), (4,0)]
 
     for shape in [
         two_horiz_points,
@@ -24,6 +26,7 @@ def main():
         rectangle,
         square,
         isosceles_triangle,
+        equilateral_triangle,
     ]:
         drawing.draw_multiple_points(shape, style="ko")
         drawing.draw_multiple_lines(reflection.find_lines_of_reflection(shape), "b:")
