@@ -86,9 +86,24 @@ def test_square_lines_of_reflection():
     assert ((-2, 2), (2, -2)) in derived_lof
 
 
-@pytest.mark.skip
 def test_two_points_lines_of_reflection():
-    assert False
+    # we'll expect that one line of reflection between two points will have same
+    # length as distance between the points
+    two_points = [(-2, 0), (2, 0)]
+    derived_lof = reflection.find_lines_of_reflection(two_points)
+    assert len(derived_lof) == 1
+    assert ((0, 2), (0, -2)) in derived_lof
+
+    two_points = [(0, 2), (0, -2)]
+    derived_lof = reflection.find_lines_of_reflection(two_points)
+    assert len(derived_lof) == 1
+    assert ((-2, 0), (2, 0)) in derived_lof
+
+    assert reflection.find_lines_of_reflection(
+        [(-2, 0), (2, 0)]
+    ) == reflection.find_lines_of_reflection(
+        [(2, 0), (-2, 0)]
+    ), "Order of points shouldn't matter."
 
 
 @pytest.mark.skip

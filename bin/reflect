@@ -12,15 +12,15 @@ from reflection import drawing
 
 def main():
     """ Main entry. """
-    line = [(-2, 0), (2, 0)]
+    two_horiz_points = [(-2, 0), (2, 0)]
+    two_vert_points = [(0, 2), (0, -2)]
     triangle = [(-2, 0), (0, 4), (2, 0)]
     rectangle = [(-2, 0), (-2, 2), (2, 2), (2, 0)]
     square = [(-2, -2), (-2, 2), (2, 2), (2, -2)]
 
-    for shape in [rectangle, square]:
-        drawing.draw_multiple_points(shape)
-        drawing.draw_one_point(reflection.find_center(shape), style="kx")
-        drawing.draw_multiple_lines(reflection.find_lines_of_reflection(shape), "g:")
+    for shape in [two_horiz_points, two_vert_points, rectangle, square]:
+        drawing.draw_multiple_points(shape, style="ko")
+        drawing.draw_multiple_lines(reflection.find_lines_of_reflection(shape), "b:")
         drawing.draw()
 
 

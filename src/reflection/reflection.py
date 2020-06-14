@@ -20,6 +20,14 @@ def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
 
     lower_left, upper_left, upper_right, lower_right = find_bounding_box(points)
 
+    if len(points) == 2:
+        x_center, y_center = find_center(points)
+        offset = find_line_segment_length(points) / 2
+        if lower_left == upper_left:  # horiz points, vert reflection line
+            return [((x_center, y_center + offset), (x_center, y_center - offset))]
+        elif lower_left == lower_right:  # vert points, horiz reflection line
+            return [((x_center - offset, y_center), (x_center + offset, y_center))]
+
     horiz = (
         find_center([lower_left, upper_left]),
         find_center([lower_right, upper_right]),
