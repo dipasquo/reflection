@@ -6,17 +6,23 @@ from typing import List
 from shapely.geometry import Point, LineString, MultiPoint
 
 
-def find_edges(points: List[tuple]) -> List[tuple]:
-    """ Derive a set of edges from set of points.
+def find_hull(points: List[tuple]) -> List[tuple]:
+    """ Find the edges of the outer hull of the point set.
 
     Args:
-        points: list of points as (x, y) tuples
-
-    Returns:
-        list of tuples of (x, y) edge endpoints
+        points: list of tuples, (x, y) point coordinates
     """
-    sorted_points = sorted(points)
-    return list(itertools.combinations(sorted_points, 2))
+    mp = MultiPoint(points)
+    hull_vertices = list(mp.convex_hull.boundary.coords)
+
+    # hull_vertices looks like [A, B, C, A] from which we want to derive three edges
+    # AB, BC, CA
+
+    hull = []
+    for i in range(len(hull_vertices) - 1):
+        hull.append((hull_vertices[i], hull_vertices[i + 1]))
+
+    return hull
 
 
 def find_center(points: List[tuple]) -> tuple:
@@ -64,40 +70,13 @@ def find_candidate_lors(points: List[tuple]) -> List[tuple]:
         list of (x, y) tuples representing edge endpoints
     """
     center = find_center(points)
-    edges = find_edges(points)
-    edge_midpoints = list(map(lambda edge: find_center(list(edge)), edges))
+    hull = find_hull(points)
+    hull_midpoints = list(map(lambda edge: find_center(list(edge)), hull))
 
-    all_connecting_lines = list(itertools.combinations(points + edge_midpoints, 2))
+    all_connecting_lines = list(itertools.combinations(points + hull_midpoints, 2))
 
     lines_on_center = list(
         filter(lambda line: is_point_on_line(center, line), all_connecting_lines)
     )
 
-    non_overlapping_lines = distill_overlapping_lines(lines_on_center)
-
-    return non_overlapping_lines
-
-
-def distill_overlapping_lines(lines: List[tuple]) -> List[tuple]:
-    """ Find longest unique non-overlapping lines from a set.
-
-    Args:
-        lines: list of (x, y) tuples representing line endpoints
-    Returns:
-        list of (x, y) tuples representing line endpoints
-    """
-    containing_lines = []
-
-    for line in lines:
-        is_contained_line = False
-        replaced_contained_line = False
-        for i, l in enumerate(containing_lines):
-            if LineString(line).contains(LineString(l)):
-                containing_lines[i] = line
-                replaced_contained_line = True
-            if LineString(l).contains(LineString(line)):
-                is_contained_line = True
-        if not replaced_contained_line and not is_contained_line:
-            containing_lines.append(line)
-
-    return containing_lines
+    return lines_on_center

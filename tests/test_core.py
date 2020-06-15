@@ -29,24 +29,36 @@ def test_find_center():
     )
 
 
-def test_find_edges():
-    edges = reflection.core.find_edges([(0, 0), (0, 2)])
-    assert len(edges) == 1
-    assert ((0, 0), (0, 2)) in edges
+def test_find_hull():
+    hull = reflection.core.find_hull([(0, 2), (0, 0), (2, 0)])
+    assert len(hull) == 3
+    assert ((0, 0), (0, 2)) in hull
+    assert ((0, 2), (2, 0)) in hull
+    assert ((0, 2), (2, 0)) in hull
 
-    edges = reflection.core.find_edges([(0, 2), (0, 0)])
-    assert len(edges) == 1
-    assert ((0, 0), (0, 2)) in edges
+    hull = reflection.core.find_hull([(0, 0), (0, 2), (2, 2), (2, 0)])
+    assert len(hull) == 4
+    assert ((0, 0), (0, 2)) in hull
+    assert ((0, 2), (2, 2)) in hull
+    assert ((2, 2), (2, 0)) in hull
+    assert ((2, 0), (0, 0)) in hull
 
-    edges = reflection.core.find_edges([(0, 2), (0, 0), (2, 0)])
-    assert len(edges) == 3
-    assert ((0, 0), (0, 2)) in edges
-    assert ((0, 0), (2, 0)) in edges
-    assert ((0, 2), (2, 0)) in edges
+    hull = reflection.core.find_hull([(0, 0), (0, 2), (1, 1), (2, 2), (2, 0)])
+    assert len(hull) == 4
+    assert ((0, 0), (0, 2)) in hull
+    assert ((0, 2), (2, 2)) in hull
+    assert ((2, 2), (2, 0)) in hull
+    assert ((2, 0), (0, 0)) in hull
 
 
 def test_is_point_on_line():
-    assert False, "some tests needed"
+    assert reflection.core.is_point_on_line((1, 1), ((0, 0), (2, 2)))
+    assert reflection.core.is_point_on_line((0, 0), ((-1, -1), (1, 1)))
+    assert reflection.core.is_point_on_line((0, 0), ((0, 0), (1, 1)))
+    assert reflection.core.is_point_on_line((1, 1), ((0, 0), (1, 1)))
+
+    assert not reflection.core.is_point_on_line((2, 2), ((0, 0), (1, 1)))
+    assert not reflection.core.is_point_on_line((0.00000000001, 0), ((-1, -1), (1, 1)))
 
 
 def test_find_candidate_lors():
@@ -57,22 +69,3 @@ def test_find_candidate_lors():
     rectangle = [(0, 0), (0, 2), (4, 2), (4, 0)]
     candidate_lors = reflection.core.find_candidate_lors(rectangle)
     assert len(candidate_lors) == 4
-
-
-def test_distill_overlapping_lines():
-    """ Initial candidate LORs contain overlapping segments, choose the longest one. """
-    one_non_overlapping_line = [((0, 0), (0, 2)), ((0, 1), (0, 2))]
-    assert reflection.core.distill_overlapping_lines(one_non_overlapping_line) == [
-        ((0, 0), (0, 2)),
-    ]
-
-    one_non_overlapping_line = [((0, 1), (0, 2)), ((0, 0), (0, 2))]
-    assert reflection.core.distill_overlapping_lines(one_non_overlapping_line) == [
-        ((0, 0), (0, 2)),
-    ]
-
-    two_non_overlapping_lines = [((0, 0), (0, 2)), ((0, 0), (2, 0)), ((0, 0), (0, 4))]
-    assert reflection.core.distill_overlapping_lines(two_non_overlapping_lines) == [
-        ((0, 0), (0, 4)),
-        ((0, 0), (2, 0)),
-    ]

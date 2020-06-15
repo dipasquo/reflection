@@ -12,14 +12,10 @@ from tests.helpers import regular_polygon
 
 def main():
     """ Main entry. """
-    two_horiz_points = [(-2, 0), (2, 0)]
-    two_vert_points = [(0, 2), (0, -2)]
     rectangle = [(-2, 0), (-2, 2), (2, 2), (2, 0)]
     isosceles_triangle = [(-1, 0), (0, 4), (1, 0)]
 
     for shape in [
-        two_horiz_points,
-        two_vert_points,
         isosceles_triangle,
         regular_polygon(n=3),
         rectangle,
