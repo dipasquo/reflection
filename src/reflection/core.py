@@ -1,41 +1,25 @@
 """ Functions that help derive lines of reflection.
 """
+import itertools
 from typing import List
 
-from shapely.geometry import LineString, MultiPoint
+from shapely.geometry import Point, LineString, MultiPoint
 
 
-def find_line_segment_length(points: List[tuple] = None) -> float:
-    """ Good ole distance between two points.
-
-    Args:
-        points: list of two points as (x, y) tuples
-    Returns:
-        float
-    """
-    assert len(points) == 2, "Expected two points to define a line segment!"
-
-    ls = LineString(points)
-
-    return ls.length
-
-
-def find_bounding_box(points: List[tuple] = None) -> tuple:
-    """ Find the bounding box for set of points.
+def find_edges(points: List[tuple]) -> List[tuple]:
+    """ Derive a set of edges from set of points.
 
     Args:
-        points: list of tuples, (x, y) point coordinates
+        points: list of points as (x, y) tuples
+
     Returns:
-        list of (x, y) coordinates of bounding box corners
-        i.e. [lower left, upper left, upper right, lower right]
+        list of tuples of (x, y) edge endpoints
     """
-    mp = MultiPoint(points)
-    x_min, y_min, x_max, y_max = mp.bounds
-
-    return (x_min, y_min), (x_min, y_max), (x_max, y_max), (x_max, y_min)
+    sorted_points = sorted(points)
+    return list(itertools.combinations(sorted_points, 2))
 
 
-def find_center(points: List[tuple] = None) -> tuple:
+def find_center(points: List[tuple]) -> tuple:
     """ Find the center of a set of points.
 
     Args:
@@ -48,3 +32,72 @@ def find_center(points: List[tuple] = None) -> tuple:
     center = (mp.centroid.x, mp.centroid.y)
 
     return center
+
+
+def is_point_on_line(point: tuple, line: tuple) -> bool:
+    """ Check if point falls on a line.
+
+    Args:
+        point: (x, y) tuple
+        line: tuple of (x, y) tuples specifying endpoints
+    Returns:
+        bool: point is on line, within some tolerance
+    """
+    assert len(line) == 2, "line should be specified as two (x, y) tuples"
+
+    float_precision = 1e-15
+    return Point(point).distance(LineString(line)) < float_precision
+
+
+def find_candidate_lors(points: List[tuple]) -> List[tuple]:
+    """ Derive a set of potential lines of reflection.
+
+    For a line to be a possible line of reflection, it connects one of:
+    * vertex to vertex
+    * vertex to edge midpoint
+    * edge midpoint to edge midpoint
+    And inherently must pass through center of the geometry.
+
+    Args:
+        points: list of points as (x, y) tuples
+    Returns:
+        list of (x, y) tuples representing edge endpoints
+    """
+    center = find_center(points)
+    edges = find_edges(points)
+    edge_midpoints = list(map(lambda edge: find_center(list(edge)), edges))
+
+    all_connecting_lines = list(itertools.combinations(points + edge_midpoints, 2))
+
+    lines_on_center = list(
+        filter(lambda line: is_point_on_line(center, line), all_connecting_lines)
+    )
+
+    non_overlapping_lines = distill_overlapping_lines(lines_on_center)
+
+    return non_overlapping_lines
+
+
+def distill_overlapping_lines(lines: List[tuple]) -> List[tuple]:
+    """ Find longest unique non-overlapping lines from a set.
+
+    Args:
+        lines: list of (x, y) tuples representing line endpoints
+    Returns:
+        list of (x, y) tuples representing line endpoints
+    """
+    containing_lines = []
+
+    for line in lines:
+        is_contained_line = False
+        replaced_contained_line = False
+        for i, l in enumerate(containing_lines):
+            if LineString(line).contains(LineString(l)):
+                containing_lines[i] = line
+                replaced_contained_line = True
+            if LineString(l).contains(LineString(line)):
+                is_contained_line = True
+        if not replaced_contained_line and not is_contained_line:
+            containing_lines.append(line)
+
+    return containing_lines

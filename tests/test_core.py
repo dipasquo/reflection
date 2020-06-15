@@ -29,23 +29,50 @@ def test_find_center():
     )
 
 
-def test_find_line_segment_length():
-    assert reflection.core.find_line_segment_length([(-1, 0), (1, 0)]) == 2
-    assert reflection.core.find_line_segment_length([(0, -1), (0, 1)]) == 2
-    assert reflection.core.find_line_segment_length([(-1, -1), (1, 1)]) == sqrt(8)
+def test_find_edges():
+    edges = reflection.core.find_edges([(0, 0), (0, 2)])
+    assert len(edges) == 1
+    assert ((0, 0), (0, 2)) in edges
+
+    edges = reflection.core.find_edges([(0, 2), (0, 0)])
+    assert len(edges) == 1
+    assert ((0, 0), (0, 2)) in edges
+
+    edges = reflection.core.find_edges([(0, 2), (0, 0), (2, 0)])
+    assert len(edges) == 3
+    assert ((0, 0), (0, 2)) in edges
+    assert ((0, 0), (2, 0)) in edges
+    assert ((0, 2), (2, 0)) in edges
 
 
-def test_find_bounding_box():
-    assert reflection.core.find_bounding_box([(-1, -1), (1, 1)]) == (
-        (-1, -1),
-        (-1, 1),
-        (1, 1),
-        (1, -1),
-    )
+def test_is_point_on_line():
+    assert False, "some tests needed"
 
-    assert reflection.core.find_bounding_box([(-3, -1), (1, 2), (2, 1), (1, -2)]) == (
-        (-3, -2),
-        (-3, 2),
-        (2, 2),
-        (2, -2),
-    )
+
+def test_find_candidate_lors():
+    square = [(0, 0), (0, 2), (2, 2), (2, 0)]
+    candidate_lors = reflection.core.find_candidate_lors(square)
+    assert len(candidate_lors) == 4
+
+    rectangle = [(0, 0), (0, 2), (4, 2), (4, 0)]
+    candidate_lors = reflection.core.find_candidate_lors(rectangle)
+    assert len(candidate_lors) == 4
+
+
+def test_distill_overlapping_lines():
+    """ Initial candidate LORs contain overlapping segments, choose the longest one. """
+    one_non_overlapping_line = [((0, 0), (0, 2)), ((0, 1), (0, 2))]
+    assert reflection.core.distill_overlapping_lines(one_non_overlapping_line) == [
+        ((0, 0), (0, 2)),
+    ]
+
+    one_non_overlapping_line = [((0, 1), (0, 2)), ((0, 0), (0, 2))]
+    assert reflection.core.distill_overlapping_lines(one_non_overlapping_line) == [
+        ((0, 0), (0, 2)),
+    ]
+
+    two_non_overlapping_lines = [((0, 0), (0, 2)), ((0, 0), (2, 0)), ((0, 0), (0, 4))]
+    assert reflection.core.distill_overlapping_lines(two_non_overlapping_lines) == [
+        ((0, 0), (0, 4)),
+        ((0, 0), (2, 0)),
+    ]
