@@ -4,6 +4,7 @@ from math import sqrt
 from statistics import mean
 
 import reflection.core
+import tests.shapes
 
 
 def test_find_center():
@@ -63,9 +64,14 @@ def test_is_point_on_line():
 
 def test_find_candidate_lors():
     square = [(0, 0), (0, 2), (2, 2), (2, 0)]
-    candidate_lors = reflection.core.find_candidate_lors(square)
+    shape = square
+    candidate_lors = reflection.core.find_candidate_lors(shape)
     assert len(candidate_lors) == 4
 
-    rectangle = [(0, 0), (0, 2), (4, 2), (4, 0)]
-    candidate_lors = reflection.core.find_candidate_lors(rectangle)
+    shape = tests.shapes.rectangle()
+    candidate_lors = reflection.core.find_candidate_lors(shape)
     assert len(candidate_lors) == 4
+
+    shape = tests.shapes.regular_polygon(n=6)
+    candidate_lors = reflection.core.find_candidate_lors(shape)
+    assert len(candidate_lors) == 6

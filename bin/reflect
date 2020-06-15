@@ -6,29 +6,35 @@ Example:
 """
 import fire
 
+import tests.shapes
 from reflection import reflection, drawing
-from tests.helpers import regular_polygon
+from reflection.core import find_hull
+from tests.shapes import regular_polygon
 
 
 def main():
     """ Main entry. """
-    rectangle = [(-2, 0), (-2, 2), (2, 2), (2, 0)]
-    isosceles_triangle = [(-1, 0), (0, 4), (1, 0)]
 
     for shape in [
-        isosceles_triangle,
+        tests.shapes.isosceles_triangle(),
         regular_polygon(n=3),
-        rectangle,
+        tests.shapes.rectangle(),
         regular_polygon(n=4),
         regular_polygon(n=5),
         regular_polygon(n=6),
         regular_polygon(n=7),
+        tests.shapes.flag(),
+        tests.shapes.butterfly(),
     ]:
         drawing.draw_multiple_points(shape, style="ko")
+
         lor = reflection.find_lines_of_reflection(shape)
         print(f"shape has {len(shape)} points and {len(lor)} lines of reflection")
         print(lor)
         drawing.draw_multiple_lines(lor, "k:")
+
+        drawing.draw_multiple_lines(find_hull(shape), style="y--")
+
         drawing.draw()
 
 

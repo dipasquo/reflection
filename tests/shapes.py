@@ -27,3 +27,19 @@ def regular_polygon(n: int) -> List[tuple]:
         points.append(point)
 
     return points
+
+
+def rectangle():
+    return [(-2, 0), (-2, 2), (2, 2), (2, 0)]
+
+
+def isosceles_triangle():
+    return [(-1, 0), (0, 4), (1, 0)]
+
+
+def flag():
+    return [(-1, -4), (1, -4), (-4, 1), (-4, 4), (-1, 1), (1, 1), (4, 1), (4, 4)]
+
+
+def butterfly():
+    return [(0, -10), (-1, 1), (1, 1), (3, -1), (-3, -1), (-3, 3), (3, 3), (0, 12)]

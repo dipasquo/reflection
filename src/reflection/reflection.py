@@ -15,8 +15,8 @@ def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
     Raises:
         ValueError: on invalid set of points
     """
-    if points is None or len(points) < 2:
-        raise ValueError("invalid input, expecting at least two points")
+    if points is None or len(points) < 3:
+        raise ValueError("invalid input, expecting at least three points")
 
     candidate_lors = reflection.core.find_candidate_lors(points)
 

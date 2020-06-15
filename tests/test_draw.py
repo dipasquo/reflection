@@ -1,7 +1,7 @@
 """ View expectations.
 """
 from reflection import drawing
-from tests.helpers import random_point
+from tests.shapes import random_point
 
 
 def test_draw_multiple_points():

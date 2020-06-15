@@ -59,22 +59,31 @@ def find_candidate_lors(points: List[tuple]) -> List[tuple]:
     """ Derive a set of potential lines of reflection.
 
     For a line to be a possible line of reflection, it connects one of:
-    * vertex to vertex
-    * vertex to edge midpoint
-    * edge midpoint to edge midpoint
-    And inherently must pass through center of the geometry.
+    * two points on the outer hull of geometry
+    * two edge midpoints on outer hull
+    * one point and one edge midpoint from outer hull
+
+    And must pass through the center of the geometry.
 
     Args:
         points: list of points as (x, y) tuples
     Returns:
         list of (x, y) tuples representing edge endpoints
     """
-    center = find_center(points)
     hull = find_hull(points)
+
+    points_on_hull = []
+    for point in points:
+        if any(map(lambda edge: is_point_on_line(point, edge), hull)):
+            points_on_hull.append(point)
+
     hull_midpoints = list(map(lambda edge: find_center(list(edge)), hull))
 
-    all_connecting_lines = list(itertools.combinations(points + hull_midpoints, 2))
+    all_connecting_lines = list(
+        itertools.combinations(points_on_hull + hull_midpoints, 2)
+    )
 
+    center = find_center(points)
     lines_on_center = list(
         filter(lambda line: is_point_on_line(center, line), all_connecting_lines)
     )

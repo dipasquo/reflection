@@ -6,7 +6,7 @@ from statistics import mean
 import pytest
 
 import reflection
-from tests.helpers import random_point
+from tests.shapes import random_point
 
 
 def test_input_point_set():
@@ -27,9 +27,15 @@ def test_input_point_set():
     assert e.type == ValueError
     assert "invalid" in str(e.value)
 
-    minimum_valid_set = [random_point(), random_point()]
+    one_point_set = [random_point(), random_point()]
+    with pytest.raises(Exception) as e:
+        reflection.find_lines_of_reflection(one_point_set)
+    assert e.type == ValueError
+    assert "invalid" in str(e.value)
+
+    minimum_valid_set = [random_point(), random_point(), random_point()]
     reflection.find_lines_of_reflection(minimum_valid_set)
-    assert True, "expected that two points is valid minimum input set"
+    assert True, "expected that three points is valid minimum input set"
 
 
 def test_rectangle_lines_of_reflection():
