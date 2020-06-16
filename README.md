@@ -1,5 +1,22 @@
 # Lines of Symmetry / Lines of Reflection
 
+## Getting Started
+Assumes existing *python3.7* and *virtualenv* installation:
+```
+virtualenv --python=/usr/bin/python3.7 venv
+. venv/bin/activate
+pip install --upgrade pip && pip install -r requirements.txt
+export PYTHONPATH="$(pwd)/src:$PYTHONPATH"
+bin/reflect
+```
+Variety of example shows, may require closing window before next is shown.
+
+Jupyter notebook is also provided.
+```
+jupyter-notebook ReflectionExamples.ipynb
+```
+## Requirements
+
 Create and implement an algorithm that, when given a set of points on an
 infinite plane, will return the complete set of lines of symmetry for those
 points.
