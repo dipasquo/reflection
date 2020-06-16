@@ -1,4 +1,4 @@
-""" Expectations for lower level functions that help derive lines of reflection.
+""" Expectations for lower level functions that help compute lines of reflection.
 """
 from math import sqrt
 from statistics import mean

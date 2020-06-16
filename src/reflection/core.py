@@ -1,4 +1,4 @@
-""" Functions that help derive lines of reflection.
+""" Functions that help compute lines of reflection.
 """
 from math import asin, degrees
 from typing import List
@@ -15,7 +15,7 @@ def find_hull(points: List[tuple]) -> List[tuple]:
     mp = MultiPoint(points)
     hull_vertices = list(mp.convex_hull.boundary.coords)
 
-    # hull_vertices looks like [A, B, C, A] from which we want to derive three lines
+    # hull_vertices looks like [A, B, C, A] from which we want to compute three lines
     # AB, BC, CA
 
     hull = []
@@ -70,7 +70,7 @@ def find_distance_from_line_to_point(line: tuple, point: tuple) -> float:
 
 
 def find_angle_from_line_to_point(line: tuple, point: tuple) -> float:
-    """ Derive angle AC from line AB and point C.
+    """ Compute angle AC from line AB and point C.
 
     Args:
         line (tuple): line AB, pair of (x, y) endpoints

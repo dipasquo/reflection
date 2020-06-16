@@ -12,7 +12,7 @@ def random_point():
 
 
 def regular_polygon(n: int) -> List[tuple]:
-    """ Derive the vertices of a regular polygon origin (0, 0)
+    """ Compute the vertices of a regular polygon origin (0, 0)
 
     Args:
         n: number of vertices

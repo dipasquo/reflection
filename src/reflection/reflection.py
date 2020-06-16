@@ -7,7 +7,7 @@ from reflection.core import find_hull, find_center, is_point_on_line
 
 
 def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
-    """ Derive set of lines of reflection / lines of symmetry for a set of points.
+    """ Compute set of lines of reflection / lines of symmetry for a set of points.
 
     Args:
         points: list of tuples, (x, y) point coordinates
@@ -27,7 +27,7 @@ def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
 
 
 def find_candidate_lors(points: List[tuple]) -> List[tuple]:
-    """ Derive a set of potential lines of reflection.
+    """ Compute a set of potential lines of reflection.
 
     For a line to be a possible line of reflection, it connects one of:
     * two points on the outer hull of geometry
