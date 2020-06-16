@@ -8,7 +8,6 @@ import fire
 
 import tests.shapes
 from reflection import reflection, drawing
-from reflection.core import find_hull
 from tests.shapes import regular_polygon
 
 
@@ -27,7 +26,6 @@ def main():
         tests.shapes.butterfly(),
     ]:
         drawing.draw_multiple_points(shape, style="ko")
-        drawing.draw_multiple_lines(find_hull(shape), style="y--")
 
         lor = reflection.find_lines_of_reflection(shape)
         drawing.draw_multiple_lines(lor, "k:")

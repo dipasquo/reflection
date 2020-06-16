@@ -59,7 +59,7 @@ def test_is_point_on_line():
     assert reflection.core.is_point_on_line((1, 1), ((0, 0), (1, 1)))
 
     assert not reflection.core.is_point_on_line((2, 2), ((0, 0), (1, 1)))
-    assert not reflection.core.is_point_on_line((0.00000000001, 0), ((-1, -1), (1, 1)))
+    assert not reflection.core.is_point_on_line((1e-8, 0), ((-1, -1), (1, 1)))
 
 
 def test_find_candidate_lors():

@@ -66,7 +66,9 @@ def find_distance_from_line_to_point(line: tuple, point: tuple) -> float:
     """
     assert len(line) == 2, "line should be specified as two (x, y) tuples"
 
-    return LineString(line).distance(Point(point))
+    float_precision = 8
+
+    return round(LineString(line).distance(Point(point)), float_precision)
 
 
 def find_angle_from_line_to_point(line: tuple, point: tuple) -> float:
@@ -84,9 +86,9 @@ def find_angle_from_line_to_point(line: tuple, point: tuple) -> float:
     path = LinearRing([A, B, C])
     sign = 1 if path.is_ccw else -1
 
-    hypotenuse = Point(A).distance(Point(C))
-    opposite = LineString(line).distance(Point(C))
-
     float_precision = 8
 
-    return sign * round(degrees(asin(opposite / hypotenuse)), float_precision)
+    hypotenuse = round(Point(A).distance(Point(C)), float_precision)
+    opposite = round(LineString(line).distance(Point(C)), float_precision)
+
+    return sign * degrees(asin(opposite / hypotenuse))

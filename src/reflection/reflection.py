@@ -3,7 +3,13 @@
 import itertools
 from typing import List
 
-from reflection.core import find_hull, find_center, is_point_on_line
+from reflection.core import (
+    find_hull,
+    find_center,
+    is_point_on_line,
+    find_distance_from_line_to_point,
+    find_angle_from_line_to_point,
+)
 
 
 def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
@@ -21,7 +27,9 @@ def find_lines_of_reflection(points: List[tuple] = None) -> List[tuple]:
 
     candidate_lors = find_candidate_lors(points)
 
-    lors = candidate_lors
+    lors = list(
+        filter(lambda line: line_reflects_all_points(line, points), candidate_lors)
+    )
 
     return lors
 
@@ -60,3 +68,36 @@ def find_candidate_lors(points: List[tuple]) -> List[tuple]:
     )
 
     return lines_on_center
+
+
+def line_reflects_all_points(line: tuple, points: List[tuple]) -> bool:
+    """ Determine whether a line reflects a set of points.
+
+    We compute a distance, angle (d, a) from the line to all points not on the line.
+    The line satisfactorily reflects the points if each point has a mirror image, i.e.
+    for each (d, a) there exists (d, -a).
+
+    Args:
+        line: tuple of (x, y) tuples specifying endpoints
+        points: list of (x, y) coordinates
+    Returns:
+        bool
+    """
+    tolerance = 1e-8
+
+    clockwise_from_line = []
+    ccw_from_line = []
+    for point in points:
+        if is_point_on_line(point, line):
+            continue
+        distance = find_distance_from_line_to_point(line, point)
+        angle = find_angle_from_line_to_point(line, point)
+        if angle < 0:
+            clockwise_from_line.append((distance, -1 * angle))
+        else:
+            ccw_from_line.append((distance, angle))
+
+    clockwise_from_line = sorted(clockwise_from_line)
+    ccw_from_line = sorted(ccw_from_line)
+
+    return clockwise_from_line == ccw_from_line

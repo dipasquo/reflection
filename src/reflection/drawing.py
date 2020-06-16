@@ -1,8 +1,8 @@
 """ Present points, lines, etc.
 """
-import matplotlib.pyplot as plt
-
 from typing import List
+
+import matplotlib.pyplot as plt
 
 
 def draw(title: str = None) -> None:
