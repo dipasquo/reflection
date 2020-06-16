@@ -27,13 +27,10 @@ def main():
         tests.shapes.butterfly(),
     ]:
         drawing.draw_multiple_points(shape, style="ko")
+        drawing.draw_multiple_lines(find_hull(shape), style="y--")
 
         lor = reflection.find_lines_of_reflection(shape)
-        print(f"shape has {len(shape)} points and {len(lor)} lines of reflection")
-        print(lor)
         drawing.draw_multiple_lines(lor, "k:")
-
-        drawing.draw_multiple_lines(find_hull(shape), style="y--")
 
         drawing.draw()
 

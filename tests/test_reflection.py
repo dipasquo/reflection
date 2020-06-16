@@ -84,9 +84,9 @@ def test_triangle_lines_of_reflection():
     assert len(derived_lors) == 1
     assert ((0, 4), (0, 0)) in derived_lors
 
-    edge_length = 4
+    line_length = 4
     A = (-2, 0)
-    B = (0, sqrt(3) * edge_length / 2)
+    B = (0, sqrt(3) * line_length / 2)
     C = (2, 0)
     equilateral_triangle = [A, B, C]
     derived_lors = reflection.find_lines_of_reflection(equilateral_triangle)

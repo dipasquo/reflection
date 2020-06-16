@@ -78,53 +78,44 @@ def test_find_candidate_lors():
 
 
 def test_find_distance_from_line_to_point():
-    # horizontal edge
+    # horizontal line
     assert (
-        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 0)), (0, 1))
+        reflection.core.find_distance_from_line_to_point(((0, 0), (1, 0)), (0, 1))
         == 1.0
     )
 
-    # vertical edge
+    # vertical line
     assert (
-        reflection.core.find_distance_from_edge_to_point(((0, 0), (0, 1)), (1, 0))
+        reflection.core.find_distance_from_line_to_point(((0, 0), (0, 1)), (1, 0))
         == 1.0
     )
 
     # unit angle
     assert (
-        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 1)), (1, 0))
+        reflection.core.find_distance_from_line_to_point(((0, 0), (1, 1)), (1, 0))
         == sqrt(2) / 2
     )
 
     # point on line
     assert (
-        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 1)), (0.5, 0.5))
+        reflection.core.find_distance_from_line_to_point(((0, 0), (1, 1)), (0.5, 0.5))
         == 0.0
     )
 
 
 def test_find_angle_from_line_to_point():
     # 45 degrees (counterclockwise)
-    assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, 1))
-        == 45
-    )
+    assert reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, 1)) == 45
 
     # 45 degrees (clockwise)
     assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, -1))
-        == -45
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, -1)) == -45
     )
 
     # 90 degrees (counterclockwise)
-    assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, 1))
-        == 90
-    )
+    assert reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, 1)) == 90
 
     # 90 degrees (clockwise)
     assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, -1))
-        == -90
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, -1)) == -90
     )
-

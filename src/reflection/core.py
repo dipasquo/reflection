@@ -1,6 +1,5 @@
 """ Functions that help derive lines of reflection.
 """
-import itertools
 from math import asin, degrees
 from typing import List
 
@@ -8,7 +7,7 @@ from shapely.geometry import Point, LineString, MultiPoint, LinearRing
 
 
 def find_hull(points: List[tuple]) -> List[tuple]:
-    """ Find the edges of the outer hull of the point set.
+    """ Find the lines of the outer hull of the point set.
 
     Args:
         points: list of tuples, (x, y) point coordinates
@@ -16,7 +15,7 @@ def find_hull(points: List[tuple]) -> List[tuple]:
     mp = MultiPoint(points)
     hull_vertices = list(mp.convex_hull.boundary.coords)
 
-    # hull_vertices looks like [A, B, C, A] from which we want to derive three edges
+    # hull_vertices looks like [A, B, C, A] from which we want to derive three lines
     # AB, BC, CA
 
     hull = []
@@ -56,54 +55,18 @@ def is_point_on_line(point: tuple, line: tuple) -> bool:
     return Point(point).distance(LineString(line)) < float_precision
 
 
-def find_candidate_lors(points: List[tuple]) -> List[tuple]:
-    """ Derive a set of potential lines of reflection.
-
-    For a line to be a possible line of reflection, it connects one of:
-    * two points on the outer hull of geometry
-    * two edge midpoints on outer hull
-    * one point and one edge midpoint from outer hull
-
-    And must pass through the center of the geometry.
-
-    Args:
-        points: list of points as (x, y) tuples
-    Returns:
-        list of (x, y) tuples representing edge endpoints
-    """
-    hull = find_hull(points)
-
-    points_on_hull = []
-    for point in points:
-        if any(map(lambda edge: is_point_on_line(point, edge), hull)):
-            points_on_hull.append(point)
-
-    hull_midpoints = list(map(lambda edge: find_center(list(edge)), hull))
-
-    all_connecting_lines = list(
-        itertools.combinations(points_on_hull + hull_midpoints, 2)
-    )
-
-    center = find_center(points)
-    lines_on_center = list(
-        filter(lambda line: is_point_on_line(center, line), all_connecting_lines)
-    )
-
-    return lines_on_center
-
-
-def find_distance_from_edge_to_point(edge: tuple, point: tuple) -> float:
+def find_distance_from_line_to_point(line: tuple, point: tuple) -> float:
     """ Distance from a line to a point.
 
     Args:
-        edge (tuple): tuple of (x, y) edge endpoints
+        line (tuple): tuple of (x, y) line endpoints
         point (tuple): (x, y) point coords
     Returns:
         float
     """
-    assert len(edge) == 2, "line should be specified as two (x, y) tuples"
+    assert len(line) == 2, "line should be specified as two (x, y) tuples"
 
-    return LineString(edge).distance(Point(point))
+    return LineString(line).distance(Point(point))
 
 
 def find_angle_from_line_to_point(line: tuple, point: tuple) -> float:
