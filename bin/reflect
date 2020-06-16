@@ -6,24 +6,23 @@ Example:
 """
 import fire
 
-import tests.shapes
-from reflection import reflection, drawing
-from tests.shapes import regular_polygon
+import reflection.shapes
+from reflection import reflection, drawing, shapes
 
 
 def main():
     """ Main entry. """
 
     for shape in [
-        tests.shapes.isosceles_triangle(),
-        regular_polygon(n=3),
-        tests.shapes.rectangle(),
-        regular_polygon(n=4),
-        regular_polygon(n=5),
-        regular_polygon(n=6),
-        regular_polygon(n=7),
-        tests.shapes.flag(),
-        tests.shapes.butterfly(),
+        shapes.isosceles_triangle(),
+        shapes.regular_polygon(n=3),
+        shapes.rectangle(),
+        shapes.regular_polygon(n=4),
+        shapes.regular_polygon(n=5),
+        shapes.regular_polygon(n=6),
+        shapes.regular_polygon(n=7),
+        shapes.flag(),
+        shapes.butterfly(),
     ]:
         drawing.draw_multiple_points(shape, style="ko")
 
