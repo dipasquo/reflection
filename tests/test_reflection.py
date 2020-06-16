@@ -4,8 +4,7 @@ from math import sqrt
 
 import pytest
 
-from reflection import reflection
-from reflection.shapes import random_point
+from reflection import reflection, shapes
 
 
 def test_input_point_set():
@@ -20,19 +19,19 @@ def test_input_point_set():
     assert e.type == ValueError
     assert "invalid" in str(e.value)
 
-    one_point_set = [random_point()]
+    one_point_set = [shapes.random_point()]
     with pytest.raises(Exception) as e:
         reflection.find_lines_of_reflection(one_point_set)
     assert e.type == ValueError
     assert "invalid" in str(e.value)
 
-    one_point_set = [random_point(), random_point()]
+    one_point_set = [shapes.random_point(), shapes.random_point()]
     with pytest.raises(Exception) as e:
         reflection.find_lines_of_reflection(one_point_set)
     assert e.type == ValueError
     assert "invalid" in str(e.value)
 
-    minimum_valid_set = [random_point(), random_point(), random_point()]
+    minimum_valid_set = [shapes.random_point(), shapes.random_point(), shapes.random_point()]
     reflection.find_lines_of_reflection(minimum_valid_set)
     assert True, "expected that three points is valid minimum input set"
 
@@ -43,11 +42,11 @@ def test_find_candidate_lors():
     candidate_lors = reflection.find_candidate_lors(shape)
     assert len(candidate_lors) == 4
 
-    shape = reflection.shapes.rectangle()
+    shape = shapes.rectangle()
     candidate_lors = reflection.find_candidate_lors(shape)
     assert len(candidate_lors) == 4
 
-    shape = reflection.shapes.regular_polygon(n=6)
+    shape = shapes.regular_polygon(n=6)
     candidate_lors = reflection.find_candidate_lors(shape)
     assert len(candidate_lors) == 6
 
