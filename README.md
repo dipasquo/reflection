@@ -3,7 +3,7 @@
 ## Getting Started
 Assumes existing *python3.7* and *virtualenv* installation:
 ```
-virtualenv --python=/usr/bin/python3.7 venv
+virtualenv --python=`which python3.7` venv
 . venv/bin/activate
 pip install --upgrade pip && pip install -r requirements.txt
 export PYTHONPATH="$(pwd)/src:$PYTHONPATH"
