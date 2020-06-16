@@ -1,25 +1,4 @@
-# Reflection
-
-## Lines of Symmetry
-
-* Connect two vertices; or connect midpoints of two edges; or connect one vertex
-to midpoint of one edge
-* Have equal number of vertices on either side of line
-
-##
-
-Count # points.
-
-Order points.
-
-Pick starting point.
-
-Derive set of points A, B, C and midpoints AB, BC, AC
-
-Radiate lines 
-
-
-## Requirements
+# Lines of Symmetry / Lines of Reflection
 
 Create and implement an algorithm that, when given a set of points on an
 infinite plane, will return the complete set of lines of symmetry for those
@@ -40,3 +19,23 @@ just the shapes shown in the image. Also because we both know that users are
 very creative in terms of probing the limits of any software that we write,
 your algorithm should be ready for the points in the input set to be rotated or
 translated by any arbitrary amount.
+
+## Notes
+
+* Connect two vertices; or connect midpoints of two edges; or connect one vertex
+to midpoint of one edge
+* Have equal number of vertices on either side of line
+
+##
+
+Count # points.
+
+Order points.
+
+Pick starting point.
+
+Derive set of points A, B, C and midpoints AB, BC, AC
+
+Radiate lines 
+
+
