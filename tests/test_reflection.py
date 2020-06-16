@@ -73,26 +73,6 @@ def test_square_lines_of_reflection():
     assert ((-2, 2), (2, -2)) in computed_lors
 
 
-def test_two_points_lines_of_reflection():
-    # we'll expect that one line of reflection between two points will have same
-    # length as distance between the points
-    two_points = [(-2, 0), (2, 0)]
-    computed_lors = reflection.find_lines_of_reflection(two_points)
-    assert len(computed_lors) == 1
-    assert ((0, 2), (0, -2)) in computed_lors
-
-    two_points = [(0, 2), (0, -2)]
-    computed_lors = reflection.find_lines_of_reflection(two_points)
-    assert len(computed_lors) == 1
-    assert ((-2, 0), (2, 0)) in computed_lors
-
-    assert reflection.find_lines_of_reflection(
-        [(-2, 0), (2, 0)]
-    ) == reflection.find_lines_of_reflection(
-        [(2, 0), (-2, 0)]
-    ), "Order of points shouldn't matter."
-
-
 def test_triangle_lines_of_reflection():
     isosceles_triangle = [(-2, 0), (0, 4), (2, 0)]
     computed_lors = reflection.find_lines_of_reflection(isosceles_triangle)
