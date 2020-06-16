@@ -83,8 +83,6 @@ def line_reflects_all_points(line: tuple, points: List[tuple]) -> bool:
     Returns:
         bool
     """
-    tolerance = 1e-8
-
     clockwise_from_line = []
     ccw_from_line = []
     for point in points:
