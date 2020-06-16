@@ -3,8 +3,10 @@
 from math import sqrt
 from statistics import mean
 
+import pytest
+
+import reflection
 import reflection.core
-import tests.shapes
 
 
 def test_find_center():
@@ -62,21 +64,6 @@ def test_is_point_on_line():
     assert not reflection.core.is_point_on_line((1e-8, 0), ((-1, -1), (1, 1)))
 
 
-def test_find_candidate_lors():
-    square = [(0, 0), (0, 2), (2, 2), (2, 0)]
-    shape = square
-    candidate_lors = reflection.core.find_candidate_lors(shape)
-    assert len(candidate_lors) == 4
-
-    shape = tests.shapes.rectangle()
-    candidate_lors = reflection.core.find_candidate_lors(shape)
-    assert len(candidate_lors) == 4
-
-    shape = tests.shapes.regular_polygon(n=6)
-    candidate_lors = reflection.core.find_candidate_lors(shape)
-    assert len(candidate_lors) == 6
-
-
 def test_find_distance_from_line_to_point():
     # horizontal line
     assert (
@@ -93,7 +80,8 @@ def test_find_distance_from_line_to_point():
     # unit angle
     assert (
         reflection.core.find_distance_from_line_to_point(((0, 0), (1, 1)), (1, 0))
-        == sqrt(2) / 2
+        == sqrt(2) / 2,
+        8,
     )
 
     # point on line
@@ -105,17 +93,21 @@ def test_find_distance_from_line_to_point():
 
 def test_find_angle_from_line_to_point():
     # 45 degrees (counterclockwise)
-    assert reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, 1)) == 45
+    assert reflection.core.find_angle_from_line_to_point(
+        ((0, 0), (1, 0)), (1, 1)
+    ) == pytest.approx(45)
 
     # 45 degrees (clockwise)
-    assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, -1)) == -45
-    )
+    assert reflection.core.find_angle_from_line_to_point(
+        ((0, 0), (1, 0)), (1, -1)
+    ) == pytest.approx(-45)
 
     # 90 degrees (counterclockwise)
-    assert reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, 1)) == 90
+    assert reflection.core.find_angle_from_line_to_point(
+        ((0, 0), (1, 0)), (0, 1)
+    ) == pytest.approx(90)
 
     # 90 degrees (clockwise)
-    assert (
-        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, -1)) == -90
-    )
+    assert reflection.core.find_angle_from_line_to_point(
+        ((0, 0), (1, 0)), (0, -1)
+    ) == pytest.approx(-90)

@@ -1,11 +1,11 @@
 """ Expectations for finding lines of reflection.
 """
 from math import sqrt
-from statistics import mean
 
 import pytest
 
-import reflection
+import tests
+from reflection import reflection
 from tests.shapes import random_point
 
 
@@ -36,6 +36,21 @@ def test_input_point_set():
     minimum_valid_set = [random_point(), random_point(), random_point()]
     reflection.find_lines_of_reflection(minimum_valid_set)
     assert True, "expected that three points is valid minimum input set"
+
+
+def test_find_candidate_lors():
+    square = [(0, 0), (0, 2), (2, 2), (2, 0)]
+    shape = square
+    candidate_lors = reflection.find_candidate_lors(shape)
+    assert len(candidate_lors) == 4
+
+    shape = tests.shapes.rectangle()
+    candidate_lors = reflection.find_candidate_lors(shape)
+    assert len(candidate_lors) == 4
+
+    shape = tests.shapes.regular_polygon(n=6)
+    candidate_lors = reflection.find_candidate_lors(shape)
+    assert len(candidate_lors) == 6
 
 
 def test_rectangle_lines_of_reflection():
@@ -91,6 +106,3 @@ def test_triangle_lines_of_reflection():
     equilateral_triangle = [A, B, C]
     computed_lors = reflection.find_lines_of_reflection(equilateral_triangle)
     assert len(computed_lors) == 3
-    assert (B, 0) in computed_lors
-    assert (mean([A[0], B[0]]), mean([A[1], B[1]])) in computed_lors
-    assert (mean([B[0], C[0]]), mean([B[1], C[1]])) in computed_lors
