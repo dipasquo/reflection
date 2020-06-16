@@ -1,9 +1,10 @@
 """ Functions that help derive lines of reflection.
 """
 import itertools
+from math import asin, degrees
 from typing import List
 
-from shapely.geometry import Point, LineString, MultiPoint
+from shapely.geometry import Point, LineString, MultiPoint, LinearRing
 
 
 def find_hull(points: List[tuple]) -> List[tuple]:
@@ -89,3 +90,40 @@ def find_candidate_lors(points: List[tuple]) -> List[tuple]:
     )
 
     return lines_on_center
+
+
+def find_distance_from_edge_to_point(edge: tuple, point: tuple) -> float:
+    """ Distance from a line to a point.
+
+    Args:
+        edge (tuple): tuple of (x, y) edge endpoints
+        point (tuple): (x, y) point coords
+    Returns:
+        float
+    """
+    assert len(edge) == 2, "line should be specified as two (x, y) tuples"
+
+    return LineString(edge).distance(Point(point))
+
+
+def find_angle_from_line_to_point(line: tuple, point: tuple) -> float:
+    """ Derive angle AC from line AB and point C.
+
+    Args:
+        line (tuple): line AB, pair of (x, y) endpoints
+        point (tuple): point C, (x, y) coord
+    Returns:
+        float: angle in degrees, <0 when ABC is clockwise, >0 when ABC is CCW
+    """
+    A = line[0]
+    B = line[1]
+    C = point
+    path = LinearRing([A, B, C])
+    sign = 1 if path.is_ccw else -1
+
+    hypotenuse = Point(A).distance(Point(C))
+    opposite = LineString(line).distance(Point(C))
+
+    float_precision = 8
+
+    return sign * round(degrees(asin(opposite / hypotenuse)), float_precision)

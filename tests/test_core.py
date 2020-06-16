@@ -75,3 +75,56 @@ def test_find_candidate_lors():
     shape = tests.shapes.regular_polygon(n=6)
     candidate_lors = reflection.core.find_candidate_lors(shape)
     assert len(candidate_lors) == 6
+
+
+def test_find_distance_from_line_to_point():
+    # horizontal edge
+    assert (
+        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 0)), (0, 1))
+        == 1.0
+    )
+
+    # vertical edge
+    assert (
+        reflection.core.find_distance_from_edge_to_point(((0, 0), (0, 1)), (1, 0))
+        == 1.0
+    )
+
+    # unit angle
+    assert (
+        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 1)), (1, 0))
+        == sqrt(2) / 2
+    )
+
+    # point on line
+    assert (
+        reflection.core.find_distance_from_edge_to_point(((0, 0), (1, 1)), (0.5, 0.5))
+        == 0.0
+    )
+
+
+def test_find_angle_from_line_to_point():
+    # 45 degrees (counterclockwise)
+    assert (
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, 1))
+        == 45
+    )
+
+    # 45 degrees (clockwise)
+    assert (
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (1, -1))
+        == -45
+    )
+
+    # 90 degrees (counterclockwise)
+    assert (
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, 1))
+        == 90
+    )
+
+    # 90 degrees (clockwise)
+    assert (
+        reflection.core.find_angle_from_line_to_point(((0, 0), (1, 0)), (0, -1))
+        == -90
+    )
+
